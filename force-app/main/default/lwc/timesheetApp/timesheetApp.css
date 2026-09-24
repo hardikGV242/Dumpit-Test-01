@@ -1,0 +1,104 @@
+.matrix-table-container {
+    overflow-x: auto;
+    max-width: 100%;
+    border: 1px solid #dddbda;
+    border-radius: 4px;
+}
+
+.day-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
+}
+
+.day-num {
+    font-weight: bold;
+}
+
+.day-name {
+    color: #706e6b;
+}
+
+.project-title {
+    display:flex;
+    flex-direction: column;
+}
+
+.project-name {
+    color:black;
+}
+
+/* Weekend cell styling */
+.weekend-cell {
+    background-color: #f3f3f3 !important;
+    text-align: center;
+    padding: 0.25rem !important;
+    width: 45px;
+    min-width: 45px;
+}
+
+/* Weekday cell styling */
+.weekday-cell {
+    text-align: center;
+    padding: 0.25rem !important;
+    width: 55px;
+    min-width: 55px;
+}
+
+/* Custom minimal styling for input boxes */
+.hours-input {
+    width: 100%;
+    border: 1px solid #c9c7c5;
+    border-radius: 4px;
+    text-align: center;
+    padding: 4px 2px;
+    font-size: 0.8125rem;
+}
+
+.hours-input:disabled {
+    background-color: transparent;
+    border-color: transparent;
+    cursor: not-allowed;
+}
+
+.hours-input:focus {
+    outline: none;
+    border-color: #0176d3;
+    box-shadow: 0 0 3px #0176d3;
+}
+
+/* Sticky first and last columns for better UX when horizontal scrolling */
+.sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    min-width: 180px;
+    border-right: 2px solid #dddbda !important;
+}
+
+.sticky-right {
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    min-width: 70px;
+    text-align: center;
+    border-left: 2px solid #dddbda !important;
+}
+
+.bg-white {
+    background-color: #ffffff !important;
+}
+
+.bg-footer {
+    background-color: #f3f3f3 !important;
+}
+
+.total-text {
+    color: green;
+}
+
+.grand-total-text {
+    color: blue;
+    font-size: 0.9rem;
+}

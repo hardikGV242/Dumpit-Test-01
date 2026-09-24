@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Block_Client_Change</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+        NOT($Setup.Bypass_validations__c.Bypass_Validation__c),
+        NOT(ISNEW()),
+        ISCHANGED(Client__c),
+        NOT(ISBLANK(PRIORVALUE(Client__c)))
+    )</errorConditionFormula>
+    <errorDisplayField>Client__c</errorDisplayField>
+    <errorMessage>Client Field Updation is Not Allowed</errorMessage>
+</ValidationRule>

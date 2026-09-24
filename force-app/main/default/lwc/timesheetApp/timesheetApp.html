@@ -1,0 +1,158 @@
+<template>
+    <div class="slds-card slds-p-around_medium">
+        <!-- Controls Bar -->
+        <div class="slds-grid slds-gutters slds-grid_bottom slds-m-bottom_medium">
+            <div class="slds-col slds-size_2-of-12">
+              <!-- Month Picker -->
+                <lightning-input 
+                    type="month" 
+                    label="Select Month" 
+                    value={selectedMonth} 
+                    onchange={handleMonthChange}>
+                </lightning-input>
+            </div>
+
+            <div class="slds-col slds-size_2-of-12">
+              <!-- Client Picker -->
+                <lightning-combobox
+                    name="client"
+                    label="Client"
+                    value={selectedClientId}
+                    placeholder="Select Client"
+                    options={clientOptions}
+                    onchange={handleClientChange}>
+                </lightning-combobox>
+            </div>
+
+            <div class="slds-col slds-size_2-of-12">
+              <!-- Project Picker -->
+                <lightning-combobox
+                    name="project"
+                    label="Project"
+                    value={selectedProjectId}
+                    placeholder="— Select Project —"
+                    options={projectOptions}
+                    disabled={isProjectDisabled}
+                    onchange={handleProjectChange}>
+                </lightning-combobox>
+            </div>
+            
+            <div class="slds-col slds-size_2-of-12">
+              <!-- Job Picker -->
+                <lightning-combobox
+                    name="job"
+                    label="Job"
+                    value={selectedJobId}
+                    placeholder="— Select Job —"
+                    options={jobOptions}
+                    disabled={isJobDisabled}
+                    onchange={handleJobChange}>
+                </lightning-combobox>
+            </div>
+
+            <div class="slds-col slds-size_4-of-12 slds-m-top_medium slds-text-align_right">
+              <!-- Add Button -->
+                <lightning-button 
+                    label="Add Project" 
+                    variant="neutral" 
+                    onclick={handleAddProject}
+                    class="slds-m-right_x-small">
+                </lightning-button>
+              
+              <!-- Save Button -->
+                <lightning-button 
+                    label="Save" 
+                    variant="brand" 
+                    onclick={handleSave}>
+                </lightning-button>
+            </div>
+        </div>
+
+        <!-- Timesheet Matrix Table -->
+        <div class="matrix-table-container">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                
+                <!-- Table Header -->
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="sticky-col header-cell" scope="col">PROJECT</th>
+                        <template for:each={monthDays} for:item="day">
+                            <th key={day.date} class={day.cellClass} scope="col">
+                                <div class="day-header">
+                                    <span class="day-num">{day.dayNumber}</span>
+                                    <span class="day-name">{day.dayOfWeek}</span>
+                                </div>
+                            </th>
+                        </template>
+                        <th class="sticky-right header-cell" scope="col">TOTAL</th>
+                    </tr>
+                </thead>
+
+                <!-- Table Body -->
+                <tbody>
+                    <template for:each={matrixRows} for:item="row">
+                        <tr key={row.jobEntryId}>
+                            <!-- Remove Button & Project Name -->
+                            <td class="sticky-col bg-white">
+                                <div class="slds-grid slds-grid_vertical-align-center">
+                                    <lightning-button-icon 
+                                        icon-name="utility:close" 
+                                        variant="border-filled" 
+                                        alternative-text="Remove Project"
+                                        data-projectid={row.projectId}
+                                        data-jobid={row.jobId}
+                                        data-jobentryid={row.jobEntryId}
+                                        onclick={handleRemoveProject}
+                                        class="slds-m-right_x-small">
+                                    </lightning-button-icon>
+                                    <div class="project-title slds-text-align_left">
+                                        <span class="slds-truncate project-name" title={row.projectName}>{row.projectName}</span>
+                                        <span class="slds-truncate slds-text-title slds-text-color_weak" title={row.jobName}>{row.jobName}</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Dynamic Day Entry Inputs -->
+                            <template for:each={row.days} for:item="day">
+                                <td key={day.date} class={day.cellClass}>
+                                    <input 
+                                        type="number" 
+                                        min="0"
+                                        max="24"
+                                        step="0.50"
+                                        value={day.hours}
+                                        disabled={day.isWeekend}
+                                        data-projectid={row.projectId}
+                                        data-jobid={row.jobId}
+                                        data-jobentryid={row.jobEntryId}
+                                        data-date={day.date}
+                                        onchange={handleHoursChange}
+                                        class="hours-input" />
+                                </td>
+                            </template>
+
+                            <!-- Row Total -->
+                            <td class="sticky-right bg-white slds-text-title_bold">
+                                {row.rowTotal}
+                            </td>
+                        </tr>
+                    </template>
+
+                    <!-- Bottom Daily Totals Footer Row -->
+                    <tr class="footer-row">
+                        <td class="sticky-col bg-footer slds-text-title_bold">Total</td>
+                        <template for:each={columnTotals} for:item="colTotal">
+                            <td key={colTotal.key} class={colTotal.cellClass}>
+                                {colTotal.val}
+                            </td>
+                        </template>
+                        <td class="sticky-right bg-footer slds-text-title_bold grand-total-text">
+                            {grandTotal}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</template>

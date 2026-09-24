@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Job_Entry__c</fullName>
+    <deleteConstraint>Cascade</deleteConstraint>
+    <label>Job Entry</label>
+    <referenceTo>Job_Entry__c</referenceTo>
+    <relationshipLabel>Time Log Entries</relationshipLabel>
+    <relationshipName>Time_Log_Entries</relationshipName>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

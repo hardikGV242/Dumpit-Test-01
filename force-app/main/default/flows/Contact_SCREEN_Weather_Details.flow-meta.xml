@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Weather_API_Callout</name>
+        <label>Weather API Callout</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>WeatherCallout.Weather_API</actionName>
+        <actionType>externalService</actionType>
+        <connector>
+            <targetReference>Weather_And_Time_Screen</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Error_Text_Screen</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>key</name>
+            <value>
+                <stringValue>b442957534684a9cbdb182116232511</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>q</name>
+            <value>
+                <elementReference>Contact_Location</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>aqi</name>
+            <value>
+                <stringValue>no</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>WeatherCallout.Weather_API</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <customProperties>
+        <name>ScreenProgressIndicator</name>
+        <value>
+            <stringValue>{&quot;location&quot;:&quot;top&quot;,&quot;type&quot;:&quot;simple&quot;}</stringValue>
+        </value>
+    </customProperties>
+    <environments>Default</environments>
+    <formulas>
+        <name>Contact_Location</name>
+        <dataType>String</dataType>
+        <expression>IF(ISNULL({!Get_Contact_Details.MailingCity}) || ISBLANK({!Get_Contact_Details.MailingCity}), 
+IF(ISNULL({!Get_Contact_Details.MailingState}) || ISBLANK({!Get_Contact_Details.MailingState}),
+IF(ISNULL({!Get_Contact_Details.MailingCountry}) || ISBLANK({!Get_Contact_Details.MailingCountry}),
+&apos;RandomValue&apos;,
+{!Get_Contact_Details.MailingCountry}),
+{!Get_Contact_Details.MailingState}),
+{!Get_Contact_Details.MailingCity})</expression>
+    </formulas>
+    <formulas>
+        <name>Formatted_12Hr_Time</name>
+        <dataType>String</dataType>
+        <expression>TEXT(
+    IF(
+        MOD(VALUE(MID({!Weather_API_Callout.2XX.location.localtime}, 12, 2)), 12) == 0,
+        12,
+        MOD(VALUE(MID({!Weather_API_Callout.2XX.location.localtime}, 12, 2)), 12)
+    )
+) 
+&amp; &quot;:&quot; &amp; 
+MID({!Weather_API_Callout.2XX.location.localtime}, 15, 2) 
+&amp; &quot; &quot; &amp; 
+IF(VALUE(MID({!Weather_API_Callout.2XX.location.localtime}, 12, 2)) &gt;= 12, &quot;PM&quot;, &quot;AM&quot;)</expression>
+    </formulas>
+    <interviewLabel>Contact-SCREEN-Weather Details {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Contact-SCREEN-Weather Details</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Get_Contact_Details</name>
+        <label>Get Contact Details</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Weather_API_Callout</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <screens>
+        <name>Error_Text_Screen</name>
+        <label>Error Text Screen</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Text</name>
+            <fieldText>&lt;h2&gt;&lt;strong style=&quot;color: rgb(173, 69, 69);&quot;&gt;! Address is not correctly populated&lt;/strong&gt;&lt;/h2&gt;&lt;p&gt;Please Populate the &lt;strong&gt;City,&lt;/strong&gt; &lt;strong&gt;State &lt;/strong&gt;or &lt;strong&gt;Country &lt;/strong&gt;Field on the record to get weather details&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <nextOrFinishButtonLabel>Refresh</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Weather_And_Time_Screen</name>
+        <label>Weather And Time Screen</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Weather_And_Time</name>
+            <fieldText>&lt;h2&gt;&lt;strong&gt;Weather And Time&lt;/strong&gt;&lt;/h2&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;strong&gt;Country: &lt;/strong&gt;{!Weather_API_Callout.2XX.location.country}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;strong&gt;Region: &lt;/strong&gt;{!Weather_API_Callout.2XX.location.region}&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;City: &lt;/strong&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!Weather_API_Callout.2XX.location.name}&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;ql-indent-1&quot;&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Time: &lt;/strong&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!Formatted_12Hr_Time}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>8</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>Weather_Image</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;{!CurrentWeatherIcon}&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;{!Weather_API_Callout.2XX.current.condition.text}&lt;/strong&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Temp: &lt;/strong&gt;&lt;span style=&quot;font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;{!Weather_API_Callout.2XX.current.tempx5fc}C&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>middle</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>4</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>Warning_Text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 11px; color: rgb(154, 152, 30); background-color: rgb(255, 255, 255);&quot;&gt;!Specify &lt;/span&gt;&lt;strong style=&quot;font-size: 11px; color: rgb(154, 152, 30); background-color: rgb(255, 255, 255);&quot;&gt;City &lt;/strong&gt;&lt;span style=&quot;font-size: 11px; color: rgb(154, 152, 30); background-color: rgb(255, 255, 255);&quot;&gt;or &lt;/span&gt;&lt;strong style=&quot;font-size: 11px; color: rgb(154, 152, 30); background-color: rgb(255, 255, 255);&quot;&gt;State &lt;/strong&gt;&lt;span style=&quot;font-size: 11px; color: rgb(154, 152, 30); background-color: rgb(255, 255, 255);&quot;&gt;for accurate results&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Get_Contact_Details.MailingCity</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>Get_Contact_Details.MailingState</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <nextOrFinishButtonLabel>Refresh</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Contact_Details</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>CurrentWeatherIcon</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;img src=&quot;https:{!Weather_API_Callout.2XX.current.condition.icon}&quot; alt=&quot;Weather Image&quot;/&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>
