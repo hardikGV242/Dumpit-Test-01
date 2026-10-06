@@ -1,0 +1,13 @@
+{
+  "renderer" : {
+    "componentOverrides" : {
+      "$" : {
+        "definition" : "@widget/c/leadTable",
+        "attributes" : {
+          "totalShown" : "{!$attrs.outputValues.leadInfo.totalShown}",
+          "leads" : "{!$attrs.outputValues.leadInfo.rows}"
+        }
+      }
+    }
+  }
+}

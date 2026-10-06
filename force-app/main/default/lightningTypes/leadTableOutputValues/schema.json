@@ -1,0 +1,13 @@
+{
+  "title" : "Lead Table Output Values",
+  "description" : "Payload returned by the LeadTableResult action",
+  "lightning:type" : "lightning__objectType",
+  "lightning:tags" : [ "mcp" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "leadInfo" : {
+      "title" : "Lead Info",
+      "lightning:type" : "@apexClassType/c__LeadTableResult$LeadTable"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<McpServerDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Returns the recent leads Using HXL</description>
+    <masterLabel>Get Recent Leads</masterLabel>
+    <resources>
+        <description>Table of recent leads with a colored header row</description>
+        <resourceName>leadTable</resourceName>
+        <resourceTitle>Lead Table</resourceTitle>
+        <resourceUri>ui://widget/lightningType/c__leadTableResult</resourceUri>
+    </resources>
+    <tools>
+        <apiDefinition>
+            <apiIdentifier>aa:apex-LeadTableResult</apiIdentifier>
+            <apiSource>API_CATALOG</apiSource>
+            <operation>LeadTableResult</operation>
+        </apiDefinition>
+        <descriptionOverride>Returns the most recent leads so they can be shown in a table widget.</descriptionOverride>
+        <destructive>false</destructive>
+        <idempotent>false</idempotent>
+        <openWorld>false</openWorld>
+        <readOnly>false</readOnly>
+        <returnDirect>false</returnDirect>
+        <toolName>LeadTableResultapex_LeadTableResult</toolName>
+        <toolTitle>LeadTableResult</toolTitle>
+        <uiResource>leadTable</uiResource>
+    </tools>
+</McpServerDefinition>

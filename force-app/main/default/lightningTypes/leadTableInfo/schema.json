@@ -1,0 +1,5 @@
+{
+  "title" : "Lead Table Info",
+  "description" : "Structured lead table output from the LeadTableResult Agentforce action (direct Apex mapping, for Lightning Experience).",
+  "lightning:type" : "@apexClassType/c__LeadTableResult$LeadTable"
+}

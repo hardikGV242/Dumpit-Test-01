@@ -1,0 +1,21 @@
+{
+  "title" : "Lead Table Result",
+  "description" : "MCP result envelope for the Get Lead Table tool",
+  "lightning:type" : "lightning__objectType",
+  "lightning:tags" : [ "mcp" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "actionName" : {
+      "title" : "Action Name",
+      "lightning:type" : "lightning__textType"
+    },
+    "isSuccess" : {
+      "title" : "Is Success",
+      "lightning:type" : "lightning__booleanType"
+    },
+    "outputValues" : {
+      "title" : "Output Values",
+      "lightning:type" : "c__leadTableOutputValues"
+    }
+  }
+}
